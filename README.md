@@ -51,12 +51,13 @@ You will see the application running on http://localhost:8000/app and you will b
 
 > _Required: [Docker](https://docs.docker.com/desktop/), [docker compose](https://docs.docker.com/compose/) and [conda](https://anaconda.org/anaconda/conda)_
 
-- Add the `openai_api_key` and the `tavily_api_key` variables in the [`.env.example`](./docker/.env.example) file and modify the name of the file to `.env`. Get these keys:
-    + [On OpenAI Platform](https://platform.openai.com/api-keys)
+- Add the `groq_api_key`, the `tavily_api_key` and the `mistral_api_key` variables in the [`.env.example`](./docker/.env.example) file and modify the name of the file to `.env`. Get these keys:
+    + [On Groq Console](https://console.groq.com/keys)
     + [On Tavily](https://app.tavily.com/home/)
+    + [On Mistral Console](https://console.mistral.ai/api-keys/)
 
 ```bash
-mv .env.example .env
+mv .env.example scripts/.env
 ```
 
 - Set up LlamaIndex Docs Agent using the dedicated script:

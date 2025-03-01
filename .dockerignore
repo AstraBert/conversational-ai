@@ -1,0 +1,6 @@
+.mypy_cache/
+scripts/
+conversational_agent.code-workspace
+README.md
+.env.example
+.gitignore

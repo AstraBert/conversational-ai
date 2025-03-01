@@ -1,3 +1,4 @@
 .mypy_cache/
 .env
 scripts/__pycache__/
+qdrant/

@@ -1,14 +1,14 @@
-from tools import search_news, search_wikipedia, get_weather, update_memory, get_memory, record_notes_on_info, record_notes_on_news, record_notes_on_weather, set_final_response, set_weather_location, set_news_query, set_wiki_page_name, update_semantic_cache, search_semantic_cache
+from tools import search_news, search_wikipedia, get_weather, update_memory, get_memory, record_notes_on_info, record_notes_on_news, record_notes_on_weather, set_final_response, set_weather_location, set_news_query, set_wiki_page_name
 from llama_index.core.agent.workflow import (
     ReActAgent,
 )
 from llama_index.llms.groq import Groq
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
+f = open("/run/secrets/groq_key")
+groq_api_key = f.read()
+f.close()
 
-llm = Groq(api_key=os.getenv("groq_api_key"), model="llama-3.3-70b-versatile")
+llm = Groq(api_key=groq_api_key, model="llama-3.3-70b-versatile")
 
 news_search_agent = ReActAgent(
     name="NewsSearchAgent",

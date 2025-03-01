@@ -16,12 +16,28 @@ services:
     ports:
       - "8080:8080"
   qdrant:
-    image: qdrant
+    image: qdrant/qdrant
     ports:
-      - 6333:6333
-      - 6334:6334
+      - "6333:6333"
+      - "6334:6334"
     volumes:
-      - ./qdrant/storage:/qdrant/storage 
-
+      - ./qdrant/storage:/qdrant/storage
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app 
+    ports:
+      - 8000:8000
+    secrets:
+      - groq_key
+      - tavily_key
+      - mistral_key
 volumes:
   pgdata:
+secrets:
+  groq_key:
+    environment: groq_api_key
+  tavily_key:
+    environment: tavily_api_key
+  mistral_key:
+    environment: mistral_api_key

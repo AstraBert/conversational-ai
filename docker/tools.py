@@ -4,26 +4,31 @@ from llama_index.core.workflow import Context
 import pgsql
 import python_weather
 from tavily import AsyncTavilyClient
-from dotenv import load_dotenv
-import os
 from llama_index.llms.groq import Groq
 from llama_index.core.llms import ChatMessage
-from semantic import AsyncSemanticCache, AsyncQdrantClient, MistralAIEmbedding
+from semantic import AsyncQdrantClient, AsyncSemanticCache, MistralAIEmbedding
 
-load_dotenv()
+f = open("/run/secrets/groq_key")
+groq_api_key = f.read()
+f.close()
+f = open("/run/secrets/tavily_key")
+tavily_api_key = f.read()
+f.close()
+f = open("/run/secrets/mistral_key")
+mistral_api_key = f.read()
+f.close()
 
 wclient = python_weather.Client(unit=python_weather.IMPERIAL)
-connection = pgsql.Connection(user="localhost", password="admin", database="postgres")
+connection = pgsql.Connection(("postgres",5432), user="localhost", password="admin", database="postgres")
 connection.execute("CREATE TABLE IF NOT EXISTS memory (username TEXT, message TEXT, importance INT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);")
-llm_query = Groq(api_key=os.environ["groq_api_key"], model="llama-3.1-8b-instant")
+llm_query = Groq(api_key=groq_api_key, model="llama-3.1-8b-instant")
 
-
-client = AsyncTavilyClient(api_key=os.getenv("tavily_api_key"))
+client = AsyncTavilyClient(api_key=tavily_api_key)
 
 wiki = Wikipedia(user_agent='MyProjectName (merlin@example.com)', language='en')
 
-qc = AsyncQdrantClient("http://localhost:6333")
-embed_model = MistralAIEmbedding(api_key=os.environ["mistral_api_key"])
+qc = AsyncQdrantClient(host="qdrant", port=6333)
+embed_model = MistralAIEmbedding(api_key=mistral_api_key)
 semantic_cache = AsyncSemanticCache(client=qc, embedding_model=embed_model)
 
 class MemoryPiece(BaseModel):
